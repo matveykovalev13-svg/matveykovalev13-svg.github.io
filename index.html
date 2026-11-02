@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Мессенджер</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- ЭКРАН АВТОРИЗАЦИИ -->
   <div id="authScreen" class="auth-screen">
     <div class="auth-card">
       <h1 id="authTitle">Вход</h1>
       <form id="authForm">
-        <input type="text" id="username" placeholder="Логин (только для регистрации)" class="hidden" />
+        <input type="text" id="username" placeholder="Логин" class="hidden" />
         <input type="email" id="email" placeholder="Email" required />
-        <input type="password" id="password" placeholder="Пароль (мин. 6)" required minlength="6" />
+        <input type="password" id="password" placeholder="Пароль" required minlength="6" />
         <button type="submit" id="authSubmit">Войти</button>
       </form>
       <p class="auth-switch">
@@ -25,78 +25,111 @@
     </div>
   </div>
 
-  <!-- ЭКРАН ЧАТА -->
   <div id="chatScreen" class="app hidden">
     <aside class="sidebar">
-      <div class="me" id="openProfileBtn" style="cursor: pointer;" title="Настройки профиля">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <div id="myAvatar" style="width: 36px; height: 36px; border-radius: 50%; background: #5288c1; display: flex; align-items: center; justify-content: center; font-weight: bold; overflow: hidden; font-size: 14px;">?</div>
-          <span id="myName">...</span>
+      <div class="sidebar-header" id="openProfileBtn">
+        <div class="my-profile-mini">
+          <div id="myAvatar" class="avatar-mini">?</div>
+          <div class="my-info">
+            <span id="myName">...</span>
+            <span id="myStatus" class="status-mini">в сети</span>
+          </div>
         </div>
-        <button id="logoutBtn" title="Выйти" style="pointer-events: auto;">⏻</button>
+        <i class="fa-solid fa-gear" style="color: #7d8b99;"></i>
       </div>
-      <div class="sidebar-header">
-        <input type="text" id="userSearch" placeholder="Поиск по @логину..." />
+      <div class="search-container">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="userSearch" placeholder="Поиск..." />
       </div>
       <ul class="chat-list" id="chatList"></ul>
+      <button id="logoutBtn" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Выйти</button>
     </aside>
 
-    <main class="chat">
-      <header class="chat-header">
-        <div class="chat-avatar" id="chatAvatar">💬</div>
-        <div class="chat-info">
-          <h2 id="chatTitle">Выбери собеседника</h2>
-          <span id="chatStatus">—</span>
+    <main class="chat-area">
+      <header class="chat-header" id="chatHeaderProfileBtn">
+        <div class="chat-header-info">
+          <div class="chat-avatar" id="chatAvatar">💬</div>
+          <div>
+            <h2 id="chatTitle">Выбери собеседника</h2>
+            <span id="chatStatus">—</span>
+          </div>
         </div>
       </header>
       <div class="messages" id="messages">
-        <div class="empty-hint">Найди друга по логину слева</div>
+        <div class="empty-hint">Выбери чат или найди друга</div>
       </div>
-      
       <form class="composer" id="composer">
-        <input type="text" id="messageInput" placeholder="Сообщение..." autocomplete="off" />
-        <button type="submit">➤</button>
+        <input type="file" id="chatImageUpload" accept="image/*" style="display: none;" />
+        <i class="fa-solid fa-image" id="uploadChatImageBtn" style="color: #7d8b99; cursor: pointer; font-size: 20px;" title="Отправить фото"></i>
+        <input type="text" id="messageInput" placeholder="Написать сообщение..." autocomplete="off" />
+        <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
       </form>
     </main>
   </div>
 
-  <!-- МОДАЛЬНОЕ ОКНО ПРОФИЛЯ -->
-  <div id="profileModal" class="modal hidden">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Мой профиль</h2>
-        <button id="closeProfileModal" class="close-btn">✕</button>
+  <!-- Модалки -->
+  <div id="viewProfileModal" class="modal hidden">
+    <div class="modal-content profile-view-content">
+      <button class="close-btn" id="closeViewProfile">✕</button>
+      <div id="viewProfileBanner" class="profile-banner"></div>
+      <div class="profile-header-main">
+        <div id="viewProfileAvatar" class="profile-avatar-large"></div>
+        <h2 id="viewProfileName">Имя</h2>
+        <p id="viewProfileId" class="text-muted">ID: 000000</p>
+        <p id="viewProfilePhone" class="text-muted">+7 999 000 00 00</p>
+        <button id="editChannelBtn" class="hidden primary-btn" style="margin-top: 10px; width: auto; padding: 8px 16px; font-size: 13px;">Редактировать канал</button>
       </div>
-      
+      <div class="nft-grid" id="viewProfileGifts"></div>
+    </div>
+  </div>
+
+  <div id="settingsModal" class="modal hidden">
+    <div class="modal-content settings-content">
+      <div class="modal-header"><h2>Настройки</h2><button id="closeSettings" class="close-btn">✕</button></div>
       <div class="profile-banner-container">
-        <div id="profileBanner" class="profile-banner"></div>
-        <button id="uploadBannerBtn" class="small-btn">Изменить баннер</button>
+        <div id="settingsBanner" class="profile-banner"></div>
+        <button id="uploadBannerBtn" class="small-btn"><i class="fa-solid fa-camera"></i></button>
         <input type="file" id="bannerUpload" accept="image/*" style="display: none;" />
       </div>
-
       <div class="profile-avatar-container">
-        <div id="profileAvatarLarge" class="profile-avatar-large">?</div>
-        <button id="uploadAvatarBtn" class="small-btn">Изменить аватарку</button>
+        <div id="settingsAvatar" class="profile-avatar-large">?</div>
+        <button id="uploadAvatarBtn" class="small-btn"><i class="fa-solid fa-camera"></i></button>
         <input type="file" id="avatarUpload" accept="image/*" style="display: none;" />
       </div>
-
-      <div class="profile-info">
+      <div class="profile-info" style="margin-top: 40px;">
         <label>Username</label>
         <input type="text" id="settingsUsername" placeholder="@username" />
-        
-        <label>Номер телефона / Текст</label>
+        <label>Номер телефона</label>
         <input type="text" id="settingsPhone" placeholder="+7 999 000-00-00" />
-
-        <div id="adminPanel" class="hidden">
+        <div id="adminPanel" class="hidden admin-panel">
           <hr style="margin: 15px 0; border-color: #2b3a4a;">
           <h3 style="color: #ffd700; margin-bottom: 10px;">👑 Админ-панель</h3>
           <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-            <input type="checkbox" id="settingsIsCreator" style="width: auto;" />
-            Показывать статус "Креатор" (🔥)
+            <input type="checkbox" id="settingsIsCreator" style="width: auto;" /> Статус "Креатор" 🔥
           </label>
         </div>
+        <button id="saveProfileBtn" class="primary-btn">Сохранить изменения</button>
+      </div>
+    </div>
+  </div>
 
-        <button id="saveProfileBtn" class="primary-btn" style="margin-top: 20px;">Сохранить изменения</button>
+  <div id="channelSettingsModal" class="modal hidden">
+    <div class="modal-content settings-content">
+      <div class="modal-header"><h2>Настройки канала</h2><button id="closeChannelSettings" class="close-btn">✕</button></div>
+      <div class="profile-banner-container">
+        <div id="channelBanner" class="profile-banner"></div>
+        <button id="uploadChannelBannerBtn" class="small-btn"><i class="fa-solid fa-camera"></i></button>
+        <input type="file" id="channelBannerUpload" accept="image/*" style="display: none;" />
+      </div>
+      <div class="profile-avatar-container">
+        <div id="channelAvatar" class="profile-avatar-large">?</div>
+        <button id="uploadChannelAvatarBtn" class="small-btn"><i class="fa-solid fa-camera"></i></button>
+        <input type="file" id="channelAvatarUpload" accept="image/*" style="display: none;" />
+      </div>
+      <div class="profile-info" style="margin-top: 40px;">
+        <label>Название канала</label>
+        <input type="text" id="channelTitleInput" placeholder="Новости" />
+        <button id="saveChannelBtn" class="primary-btn">Сохранить канал</button>
       </div>
     </div>
   </div>
