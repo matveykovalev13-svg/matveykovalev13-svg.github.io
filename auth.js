@@ -1,5 +1,5 @@
 import { supabase } from "./supabase.js";
-import { initChat, cleanupChat } from "./chat.js";
+import { initChat, cleanupChat, openProfileModal } from "./chat.js";
 
 const authScreen = document.getElementById("authScreen");
 const chatScreen = document.getElementById("chatScreen");
@@ -37,10 +37,7 @@ authForm.addEventListener("submit", async (e) => {
     if (mode === "register") {
       const username = usernameEl.value.trim().toLowerCase();
       if (!/^[a-z0-9_]{3,20}$/.test(username)) throw new Error("Логин: 3-20 символов (a-z, 0-9, _)");
-
-      const { data, error } = await supabase.auth.signUp({
-        email, password, options: { data: { username } }
-      });
+      const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { username } } });
       if (error) throw error;
       if (!data.session) throw new Error("Отключи 'Confirm email' в Supabase → Auth → Providers → Email");
     } else {
@@ -67,10 +64,12 @@ supabase.auth.onAuthStateChange(async (event, session) => {
 });
 
 document.getElementById("logoutBtn").addEventListener("click", () => supabase.auth.signOut());
+document.getElementById("openProfileBtn").addEventListener("click", (e) => {
+  if (e.target.id !== "logoutBtn") openProfileModal();
+});
 
 function translateError(msg = "") {
   if (msg.includes("Invalid login")) return "Неверный email или пароль";
   if (msg.includes("already registered")) return "Этот email уже занят";
-  if (msg.includes("Password should be")) return "Пароль слишком короткий (мин. 6)";
   return msg;
 }
