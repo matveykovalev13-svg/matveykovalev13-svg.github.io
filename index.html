@@ -37,10 +37,17 @@
         </div>
         <i class="fa-solid fa-gear" style="color: #7d8b99;"></i>
       </div>
+
       <div class="search-container">
         <i class="fa-solid fa-magnifying-glass"></i>
         <input type="text" id="userSearch" placeholder="Поиск..." />
       </div>
+      
+      <!-- Кнопка создания канала (только для админа) -->
+      <div id="createChannelBtnContainer" class="hidden" style="padding: 0 16px 10px;">
+        <button id="createChannelBtn" class="primary-btn" style="font-size: 13px; padding: 8px; background: #e74c3c;">+ Создать канал</button>
+      </div>
+
       <ul class="chat-list" id="chatList"></ul>
       <button id="logoutBtn" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Выйти</button>
     </aside>
@@ -77,9 +84,7 @@
         <h2 id="viewProfileName">Имя</h2>
         <p id="viewProfileId" class="text-muted">ID: 000000</p>
         <p id="viewProfilePhone" class="text-muted">+7 999 000 00 00</p>
-        <button id="editChannelBtn" class="hidden primary-btn" style="margin-top: 10px; width: auto; padding: 8px 16px; font-size: 13px;">Редактировать канал</button>
       </div>
-      <div class="nft-grid" id="viewProfileGifts"></div>
     </div>
   </div>
 
@@ -109,27 +114,6 @@
           </label>
         </div>
         <button id="saveProfileBtn" class="primary-btn">Сохранить изменения</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="channelSettingsModal" class="modal hidden">
-    <div class="modal-content settings-content">
-      <div class="modal-header"><h2>Настройки канала</h2><button id="closeChannelSettings" class="close-btn">✕</button></div>
-      <div class="profile-banner-container">
-        <div id="channelBanner" class="profile-banner"></div>
-        <button id="uploadChannelBannerBtn" class="small-btn"><i class="fa-solid fa-camera"></i></button>
-        <input type="file" id="channelBannerUpload" accept="image/*" style="display: none;" />
-      </div>
-      <div class="profile-avatar-container">
-        <div id="channelAvatar" class="profile-avatar-large">?</div>
-        <button id="uploadChannelAvatarBtn" class="small-btn"><i class="fa-solid fa-camera"></i></button>
-        <input type="file" id="channelAvatarUpload" accept="image/*" style="display: none;" />
-      </div>
-      <div class="profile-info" style="margin-top: 40px;">
-        <label>Название канала</label>
-        <input type="text" id="channelTitleInput" placeholder="Новости" />
-        <button id="saveChannelBtn" class="primary-btn">Сохранить канал</button>
       </div>
     </div>
   </div>
