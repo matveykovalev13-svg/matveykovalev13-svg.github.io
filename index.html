@@ -1,1 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Мессенджер</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ЭКРАН АВТОРИЗАЦИИ -->
+  <div id="authScreen" class="auth-screen">
+    <div class="auth-card">
+      <h1 id="authTitle">Вход</h1>
+      <form id="authForm">
+        <input type="text" id="username" placeholder="Логин (только для регистрации)" class="hidden" />
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Пароль (мин. 6)" required minlength="6" />
+        <button type="submit" id="authSubmit">Войти</button>
+      </form>
+      <p class="auth-switch">
+        <span id="authHint">Нет аккаунта?</span>
+        <a href="#" id="authToggle">Зарегистрироваться</a>
+      </p>
+      <p id="authError" class="error"></p>
+    </div>
+  </div>
 
+  <!-- ЭКРАН ЧАТА -->
+  <div id="chatScreen" class="app hidden">
+    <aside class="sidebar">
+      <div class="me">
+        <span id="myName">...</span>
+        <button id="logoutBtn" title="Выйти">⏻</button>
+      </div>
+      <div class="sidebar-header">
+        <input type="text" id="userSearch" placeholder="Поиск по логину..." />
+      </div>
+      <ul class="chat-list" id="chatList"></ul>
+    </aside>
+
+    <main class="chat">
+      <header class="chat-header">
+        <div class="chat-avatar" id="chatAvatar">💬</div>
+        <div class="chat-info">
+          <h2 id="chatTitle">Выбери собеседника</h2>
+          <span id="chatStatus">—</span>
+        </div>
+      </header>
+      <div class="messages" id="messages">
+        <div class="empty-hint">Найди друга по логину слева</div>
+      </div>
+      <form class="composer hidden" id="composer">
+        <input type="text" id="messageInput" placeholder="Сообщение..." autocomplete="off" />
+        <button type="submit">➤</button>
+      </form>
+    </main>
+  </div>
+
+  <script type="module" src="auth.js"></script>
+</body>
+</html>
